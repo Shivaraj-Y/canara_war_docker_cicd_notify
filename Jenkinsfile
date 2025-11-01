@@ -174,7 +174,7 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: 'GMAIL_GMAILAUTH', usernameVariable: 'GMAIL_USER', passwordVariable: 'GMAIL_APP_PASS')]) {
             sh """
                 GMAIL_USER=\$GMAIL_USER GMAIL_APP_PASS=\$GMAIL_APP_PASS \
-                /opt/scripts/jenkins_notify.sh "SUCCESS" "${JOB_NAME}" "${BUILD_ID}" "${RECEIVER_EMAIL}"
+                ./jenkins_notify.sh "SUCCESS" "${JOB_NAME}" "${BUILD_ID}" "${RECEIVER_EMAIL}"
             """
             }
         }
@@ -182,7 +182,7 @@ pipeline {
             withCredentials([usernamePassword(credentialsId: 'GMAIL_GMAILAUTH', usernameVariable: 'GMAIL_USER', passwordVariable: 'GMAIL_APP_PASS')]) {
             sh """
                 GMAIL_USER=\$GMAIL_USER GMAIL_APP_PASS=\$GMAIL_APP_PASS \
-                /opt/scripts/jenkins_notify.sh "FAILED" "${JOB_NAME}" "${BUILD_ID}" "${RECEIVER_EMAIL}"
+                ./jenkins_notify.sh "FAILED" "${JOB_NAME}" "${BUILD_ID}" "${RECEIVER_EMAIL}"
             """
             }
         }
