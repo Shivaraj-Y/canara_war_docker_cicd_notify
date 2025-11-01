@@ -6,20 +6,41 @@ This project implements a complete CI/CD pipeline for deploying a Java web appli
 - Docker installed
 - Maven (for local builds) or use multi-stage Docker build
 - JDK version matching your app (example uses JDK 11)
+---
 
-## Project layout (typical)
-- pom.xml
-- src/main/java
-- src/main/resources
-- src/main/webapp (for WAR)
-- target/ (build output)
+### ⚙️ Jenkins Parameters
+| Param | Description |
+|------|------------|
+| ENVIRONMENT | dev / prod |
+| ACTION | build / deploy |
+| RECIPIENT_EMAIL | Email to receive alerts |
+---
+
+### 📨 Notification Environment Variables (Jenkins Credentials)
+| Key | Description |
+|----|-------------|
+| GMAIL_USER | Gmail sender ID |
+| GMAIL_APP_PASS | Gmail App Password |
+---
+
+### 🛠 Run Notification Script Manually (test)
+```bash
+GMAIL_USER="your@gmail.com" \
+GMAIL_APP_PASS="xxxx" \
+./jenkins_notify.sh SUCCESS sample-job 10 user@example.com
+```
+---
 
 ## GitHub Badges Block
-![Jenkins](https://img.shields.io/badge/CI-Jenkins-blue)
-![Docker](https://img.shields.io/badge/Container-Docker-blue)
-![Maven](https://img.shields.io/badge/Build-Maven-success)
-![Tomcat](https://img.shields.io/badge/Server-Tomcat-orange)
-![AWS](https://img.shields.io/badge/Cloud-AWS-ff9900)
-![License](https://img.shields.io/badge/License-MIT-green)
-
+<p align="center">
+  <img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Jenkins-CI%2FCD-blue?style=for-the-badge&logo=jenkins">
+  <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+  <img src="https://img.shields.io/badge/Email%20Alerts-Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white">
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Author-sak__shetty-purple?style=for-the-badge&logo=github">
+</p>
+<p align="center">
+  💡 Project crafted with passion by <b>sak_shetty</b> 🚀
+</p>
 ---

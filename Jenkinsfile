@@ -10,7 +10,7 @@ pipeline {
     parameters {
         choice(name: 'ENVIRONMENT', choices: ['dev', 'prod'], description: 'Select deployment environment')
         choice(name: 'ACTION', choices: ['deploy', 'remove'], description: 'Select action to perform')
-        string(name: 'RECEIVER_EMAIL', defaultValue: 'team@example.com', description: 'Comma-separated recipient emails')
+        string(name: 'RECEIVER_EMAIL', defaultValue: 'team@gmail.com', description: 'Comma-separated recipient emails')
     }
 
     stages {
@@ -32,6 +32,17 @@ pipeline {
                     sudo docker-compose down
                     sudo docker-compose up -d --build
                 '''
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'GMAIL_GMAILAUTH', usernameVariable: 'GMAIL_USER', passwordVariable: 'GMAIL_APP_PASS')]) {
+                        sh """
+                        chmod +x jenkins_notify.sh || true
+
+                        GMAIL_USER=\$GMAIL_USER \
+                        GMAIL_APP_PASS=\$GMAIL_APP_PASS \
+                        ./jenkins_notify.sh "DEV ENV DEPLOY SUCCESS" "$JOB_NAME" "$BUILD_ID" "$RECEIVER_EMAIL"
+                        """
+                    }
+                }
             }
         }
         stage("Remove container in Dev Environment") {
@@ -45,6 +56,17 @@ pipeline {
                 echo 'Stopping Development Environment'
                 sh 'sudo docker-compose down'
                 sh 'sudo docker system prune -af'
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'GMAIL_GMAILAUTH', usernameVariable: 'GMAIL_USER', passwordVariable: 'GMAIL_APP_PASS')]) {
+                        sh """
+                        chmod +x jenkins_notify.sh || true
+
+                        GMAIL_USER=\$GMAIL_USER \
+                        GMAIL_APP_PASS=\$GMAIL_APP_PASS \
+                        ./jenkins_notify.sh "DEV ENV REMOVE SUCCESS" "$JOB_NAME" "$BUILD_ID" "$RECEIVER_EMAIL"
+                        """
+                    }
+                }
             }
         }
         stage('Build Docker Image') {

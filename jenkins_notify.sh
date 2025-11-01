@@ -1,7 +1,7 @@
 #!/bin/bash
 # ---------------------------------------------------
-# ✅ Jenkins Gmail Notification Script (msmtp version)
-# ✅ Designed & Developed by: sak_shetty
+# Jenkins Gmail Notification Script (msmtp version)
+# Designed & Developed by: sak_shetty
 # ---------------------------------------------------
 
 LOG_DIR="./notify_logs"
@@ -17,14 +17,14 @@ GMAIL_USER="${GMAIL_USER}"
 GMAIL_APP_PASS="${GMAIL_APP_PASS}"
 
 if [ -z "$STATUS" ] || [ -z "$JOB_NAME" ] || [ -z "$BUILD_ID" ] || [ -z "$TO_EMAIL" ]; then
-  echo "❌ Missing arguments. Usage:" | tee -a "$LOG_FILE"
+  echo "Missing arguments. Usage:" | tee -a "$LOG_FILE"
   echo "./jenkins_notify.sh <STATUS> <JOB_NAME> <BUILD_ID> <TO_EMAIL>" | tee -a "$LOG_FILE"
   exit 1
 fi
 
 # ✅ Install msmtp if missing
 if ! command -v msmtp >/dev/null 2>&1; then
-  echo "📦 Installing msmtp & mailutils..." | tee -a "$LOG_FILE"
+  echo "Installing msmtp & mailutils..." | tee -a "$LOG_FILE"
   sudo apt-get update -y >> "$LOG_FILE" 2>&1
   sudo apt-get install -y msmtp mailutils >> "$LOG_FILE" 2>&1
 fi
@@ -50,7 +50,7 @@ chmod 600 ./msmtprc
 
 SUBJECT="Jenkins Build - $JOB_NAME (#$BUILD_ID) - $STATUS"
 
-# ✅ HTML Email body
+# HTML Email body
 EMAIL_CONTENT=$(cat <<EOF
 Subject: $SUBJECT
 From: $GMAIL_USER
@@ -88,7 +88,7 @@ p { font-size:14px; }
 <p><b>Timestamp:</b> $(date)</p>
 
 <hr>
-<p class="footer">🚀 Designed & Developed by <b>sak_shetty</b></p>
+<p class="footer">Designed & Developed by <b>sak_shetty</b></p>
 </div>
 </body>
 </html>
@@ -97,5 +97,5 @@ EOF
 
 echo "$EMAIL_CONTENT" | msmtp --file=./msmtprc -a gmail "$TO_EMAIL"
 
-echo "✅ HTML Email sent at $(date)" | tee -a "$LOG_FILE"
+echo "HTML Email sent at $(date)" | tee -a "$LOG_FILE"
 exit 0
